@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyCook · Discover Recipes</title>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+  <!-- ================= APP LAYOUT & SIDEBAR NAVIGATION ================= -->
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">EC</div>
+        <div>
+          <div class="brand-name">EasyCook</div>
+          <div class="brand-tagline">Digital Cookbook</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <button class="nav-btn active" type="button" data-view="discover">
+          <span class="nav-icon" aria-hidden="true">◉</span>
+          <span>Discover Recipes</span>
+        </button>
+        <button class="nav-btn" type="button" data-view="mealplans">
+          <span class="nav-icon" aria-hidden="true">▦</span>
+          <span>My Meal Plans</span>
+        </button>
+        <a class="nav-btn nav-link" href="#cookbook">
+          <span class="nav-icon" aria-hidden="true">♥</span>
+          <span>My Cookbook</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-note">
+        <span class="sidebar-note-rule"></span>
+        Curated recipes, kept simple.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <!-- ============================================================
+           A. DISCOVER RECIPES
+           Search, category filters, featured recipe, suggestions,
+           cookbook and API-powered recipe results.
+           ============================================================ -->
+      <section id="view-discover" class="view active" aria-labelledby="discoverTitle">
+        <header class="top-header">
+          <div class="page-heading">
+            <p class="section-kicker">EasyCook</p>
+            <h1 id="discoverTitle" class="page-title">Discover Recipes</h1>
+            <p class="page-subtitle">Search the recipe dictionary, browse by category, and keep your favourites close.</p>
+          </div>
+
+          <!-- Search form -->
+          <div class="search-wrapper">
+            <label class="sr-only" for="searchInput">Search recipes</label>
+            <input type="text" id="searchInput" placeholder="Search recipes or ingredients" autocomplete="off">
+            <button id="searchBtn" class="btn btn-primary" type="button">Search</button>
+            <button id="randomBtn" class="btn btn-accent" type="button">Random Recipe</button>
+          </div>
+
+          <!-- Category filter buttons -->
+          <div class="category-filters" aria-label="Filter recipes by category">
+            <button class="cat-btn active" type="button" data-category="All">All</button>
+            <button class="cat-btn" type="button" data-category="Breakfast">Breakfast</button>
+            <button class="cat-btn" type="button" data-category="Lunch">Lunch</button>
+            <button class="cat-btn" type="button" data-category="Dinner">Dinner</button>
+            <button class="cat-btn" type="button" data-category="Dessert">Dessert</button>
+            <button class="cat-btn" type="button" data-category="Vegetarian">Vegetarian</button>
+          </div>
+        </header>
+
+        <!-- Featured recipe: chosen from real API results and refreshed manually -->
+        <section class="featured-section" aria-labelledby="featuredHeading">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Editor's pick</p>
+              <h2 id="featuredHeading" class="section-heading">Featured Recipe</h2>
+            </div>
+            <button id="featuredRefreshBtn" class="btn btn-secondary btn-sm" type="button">
+              <span aria-hidden="true">↻</span> Next Recipe
+            </button>
+          </div>
+
+          <article id="featuredCard" class="featured-card">
+            <div class="featured-image">
+              <img id="featuredImg" src="" alt="">
+            </div>
+            <div class="featured-info">
+              <div class="featured-label">Featured</div>
+              <h3 class="featured-title" id="featuredTitle">Finding a recipe…</h3>
+              <p class="featured-meta" id="featuredMeta">Loading featured recipe</p>
+              <div>
+                <button id="featuredViewBtn" class="btn btn-accent" type="button" disabled>View Recipe</button>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- Student-written suggestion logic is applied in index.js -->
+        <section class="suggestions-section" aria-labelledby="suggestionsHeading">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Suggested for you</p>
+              <h2 id="suggestionsHeading" class="section-heading">Recipe Suggestions</h2>
+            </div>
+          </div>
+          <div id="suggestionStatus" class="status-text" aria-live="polite"></div>
+          <div id="suggestionResult" class="suggestions-grid"></div>
+        </section>
+
+        <!-- API recipe results appear here -->
+        <section class="results-section" aria-labelledby="resultsHeading">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Recipe dictionary</p>
+              <h2 id="resultsHeading" class="section-heading">Recipes</h2>
+            </div>
+          </div>
+          <div id="results" class="recipes-grid"></div>
+          <div id="message" class="status-text" aria-live="polite"></div>
+        </section>
+
+        <!-- Saved favourites (stored in Local Storage) -->
+        <section id="cookbook" class="cookbook-section" aria-labelledby="cookbookHeading">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Saved by you</p>
+              <h2 id="cookbookHeading" class="section-heading">My Cookbook</h2>
+            </div>
+          </div>
+          <div id="cookbookMessage" class="status-text" aria-live="polite"></div>
+          <div id="cookbookList" class="cookbook-grid"></div>
+        </section>
+      </section>
+
+      <!-- 
+           B. MY MEAL PLANS
+           Create, read, update and delete meal plans (CRUD) using
+           Local Storage plus the existing JSON data file.
+            -->
+      <section id="view-mealplans" class="view" aria-labelledby="mealPlansTitle">
+        <header class="page-header">
+          <div class="page-heading">
+            <p class="section-kicker">Plan ahead</p>
+            <h1 id="mealPlansTitle" class="page-title">My Meal Plans</h1>
+            <p class="page-subtitle">Create, update and remove meal plans. Everything is saved on this device.</p>
+          </div>
+          <button id="createMealPlanBtn" class="btn btn-accent" type="button">Create Meal Plan</button>
+        </header>
+
+        <!-- Meal plan form: Add and Update share the same fields -->
+        <section class="mealplan-form-section" aria-labelledby="mealPlanFormTitle">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Meal plan editor</p>
+              <h2 id="mealPlanFormTitle" class="section-heading">Add or update a plan</h2>
+            </div>
+          </div>
+
+          <div class="mealplan-form">
+            <label class="field">
+              <span>Plan ID (for update)</span>
+              <input type="text" id="mealPlanId" placeholder="Filled when you click Edit">
+            </label>
+            <label class="field">
+              <span>Meal plan name</span>
+              <input type="text" id="mealPlanName" placeholder="e.g. Weeknight dinners">
+            </label>
+            <label class="field">
+              <span>Recipe name</span>
+              <input type="text" id="mealPlanRecipe" placeholder="e.g. Lemon chicken">
+            </label>
+            <div class="form-actions">
+              <button id="addMealPlanBtn" class="btn btn-primary" type="button">Add Plan</button>
+              <button id="updateMealPlanBtn" class="btn btn-accent" type="button">Update Plan</button>
+              <button id="loadMealPlansBtn" class="btn btn-secondary" type="button">Refresh</button>
+            </div>
+          </div>
+          <div id="mealPlanMessage" class="status-text" aria-live="polite"></div>
+        </section>
+
+        <!-- Saved meal plans (rendered from Local Storage) -->
+        <section class="mealplans-list-section" aria-labelledby="savedPlansTitle">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Saved locally</p>
+              <h2 id="savedPlansTitle" class="section-heading">Saved Meal Plans</h2>
+            </div>
+          </div>
+          <div id="mealPlanList" class="mealplans-list"></div>
+        </section>
+
+        <!-- Ratio calculator for changing serving sizes -->
+        <section class="serving-calc-section" aria-labelledby="calcTitle">
+          <div class="section-head compact">
+            <div>
+              <p class="section-kicker">Kitchen maths</p>
+              <h2 id="calcTitle" class="section-heading">Serving Calculator</h2>
+            </div>
+          </div>
+          <p class="section-note">Enter the original and desired serving counts to find the ingredient scaling ratio.</p>
+          <div class="calc-controls">
+            <label>Original Servings <input type="number" id="calcOrig" value="4" min="1" step="1"></label>
+            <label>Desired Servings <input type="number" id="calcDesired" value="2" min="1" step="1"></label>
+            <button id="calcBtn" class="btn btn-primary" type="button">Calculate</button>
+          </div>
+          <div id="calcMessage" class="status-text" aria-live="polite"></div>
+          <div id="calcResult" class="calc-result"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <!-- 
+       C. RECIPE DETAILS
+       A quick-view modal. "Open Full Recipe" goes to recipe.html
+       for the full details page and serving adjustment tool.
+        -->
+  <div id="recipeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content" role="document">
+      <div class="modal-header">
+        <h2 id="modalTitle">Recipe Details</h2>
+        <button id="modalClose" class="btn btn-icon btn-ghost modal-close" type="button" aria-label="Close recipe details">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-image">
+          <img id="modalImg" src="" alt="">
+        </div>
+        <div class="modal-info">
+          <div class="modal-meta" id="modalMeta"></div>
+          <h3>Ingredients</h3>
+          <ul id="modalIngredients" class="modal-list"></ul>
+          <h3>Instructions</h3>
+          <div id="modalInstructions" class="modal-instructions"></div>
+          <div class="modal-actions">
+            <button id="modalCookbookBtn" class="btn btn-secondary" type="button">Save to Cookbook</button>
+            <button id="modalFullRecipeBtn" class="btn btn-primary" type="button">Open Full Recipe</button>
+          </div>
+          <div id="modalStatus" class="status-text" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+  <script src="../ui_decoration/decorations.js"></script>
+</body>
+</html>

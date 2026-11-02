@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyCook · Recipe Details</title>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+  <!-- ================= APP LAYOUT & SIDEBAR NAVIGATION ================= -->
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo">EC</div>
+        <div>
+          <div class="brand-name">EasyCook</div>
+          <div class="brand-tagline">Digital Cookbook</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <a class="nav-btn" href="index.html">
+          <span class="nav-icon" aria-hidden="true">◉</span>
+          <span>Discover Recipes</span>
+        </a>
+        <a class="nav-btn" href="index.html?view=mealplans">
+          <span class="nav-icon" aria-hidden="true">▦</span>
+          <span>My Meal Plans</span>
+        </a>
+        <a class="nav-btn" href="index.html#cookbook">
+          <span class="nav-icon" aria-hidden="true">♥</span>
+          <span>My Cookbook</span>
+        </a>
+        <a class="nav-btn active" href="recipe.html" aria-current="page">
+          <span class="nav-icon" aria-hidden="true">▣</span>
+          <span>Recipe Details</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-note">
+        <span class="sidebar-note-rule"></span>
+        Curated recipes, kept simple.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <!-- ============================================================
+           C. RECIPE DETAILS
+           Full recipe view: image, name, ingredients, instructions,
+           category, area, serving information and serving calculator.
+           ============================================================ -->
+      <header class="article-header">
+        <div class="article-header-top">
+          <a href="index.html" class="back-link">← Back to Discover</a>
+          <button id="loadRandomDetailBtn" class="btn btn-secondary btn-sm" type="button">
+            <span aria-hidden="true">↻</span> Load Random Recipe
+          </button>
+        </div>
+        <div class="page-heading">
+          <p class="section-kicker">Recipe details</p>
+          <h1 id="recipePageTitle" class="page-title">Recipe Article</h1>
+          <p class="page-subtitle">Read the full recipe, adjust servings and save it to your cookbook.</p>
+        </div>
+      </header>
+
+      <!-- Full recipe content is rendered here from the API -->
+      <section class="article-hero-section" aria-label="Recipe article">
+        <div id="recipeDetail" class="editorial-article"></div>
+      </section>
+
+      <!-- Recipe actions -->
+      <section class="article-actions" aria-label="Recipe actions">
+        <div class="planner-quick-add">
+          <label class="field" for="detailPlanName">
+            <span>Meal plan name</span>
+            <input type="text" id="detailPlanName" placeholder="Name this meal plan" disabled>
+          </label>
+          <button id="addToMealPlannerBtn" class="btn btn-primary" type="button" disabled>Add to Meal Planner</button>
+        </div>
+        <button id="addToCookbookBtn" class="btn btn-secondary" type="button" disabled>Save to My Cookbook</button>
+      </section>
+      <div id="detailMessage" class="status-text" aria-live="polite"></div>
+
+      <!-- Serving calculator: scales every ingredient quantity -->
+      <section class="serving-calc-section" aria-labelledby="detailCalcTitle">
+        <div class="section-head compact">
+          <div>
+            <p class="section-kicker">Kitchen maths</p>
+            <h2 id="detailCalcTitle" class="section-heading">Serving Size Adjustment</h2>
+          </div>
+        </div>
+        <p class="section-note">Adjust the quantities for the number of people you are cooking for.</p>
+
+        <div class="calc-row">
+          <label class="calc-field">Original Servings
+            <input type="number" id="origServings" value="4" min="1" step="1">
+          </label>
+          <label class="calc-field">Desired Servings
+            <input type="number" id="desiredServings" value="2" min="1" step="1">
+          </label>
+          <button id="calcBtn" class="btn btn-primary" type="button">Calculate</button>
+        </div>
+
+        <div id="calcMessage" class="status-text" aria-live="polite"></div>
+        <div id="adjustedIngredients" class="adjusted-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="recipe.js"></script>
+  <script src="../ui_decoration/decorations.js"></script>
+</body>
+</html>
